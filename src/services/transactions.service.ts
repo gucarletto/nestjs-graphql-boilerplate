@@ -1,15 +1,60 @@
 import { Injectable } from '@nestjs/common';
-import { Query } from '@nestjs/graphql';
+import { PrismaService } from '../prisma.service';
+import { Transaction, Prisma } from '@prisma/client';
 
 @Injectable()
-export class TransactionsService {
-  @Query(() => String)
-  async getAllTransactions(): Promise<string> {
-    return 'Hello World!';
+export class TransactionService {
+  constructor(private prisma: PrismaService) {}
+
+  async transaction(
+    transactionWhereUniqueInput: Prisma.TransactionWhereUniqueInput,
+  ): Promise<Transaction | null> {
+    return this.prisma.transaction.findUnique({
+      where: transactionWhereUniqueInput,
+    });
   }
 
-  @Query(() => String)
-  async getTransactionById(id: number): Promise<string> {
-    return 'Hello World!';
+  async transactions(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.TransactionWhereUniqueInput;
+    where?: Prisma.TransactionWhereInput;
+    orderBy?: Prisma.TransactionOrderByInput;
+  }): Promise<Transaction[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.transaction.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+    });
+  }
+
+  async createTransaction(
+    data: Prisma.TransactionCreateInput,
+  ): Promise<Transaction> {
+    return this.prisma.transaction.create({
+      data,
+    });
+  }
+
+  async updateTransaction(params: {
+    where: Prisma.TransactionWhereUniqueInput;
+    data: Prisma.TransactionUpdateInput;
+  }): Promise<Transaction> {
+    const { where, data } = params;
+    return this.prisma.transaction.update({
+      data,
+      where,
+    });
+  }
+
+  async deleteTransaction(
+    where: Prisma.TransactionWhereUniqueInput,
+  ): Promise<Transaction> {
+    return this.prisma.transaction.delete({
+      where,
+    });
   }
 }
