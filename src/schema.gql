@@ -18,7 +18,7 @@ type User {
 type Query {
   getHello: String!
   user(id: Int!): User
-  users: User
-  transaction(id: Int!): [Transaction!]
+  users: [User!]
+  transaction(id: Int!): Transaction
   transactions: [Transaction!]
 }

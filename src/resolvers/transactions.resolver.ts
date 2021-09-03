@@ -22,7 +22,7 @@ export class TransactionsResolver {
     private readonly transactionsService: TransactionService,
   ) {}
 
-  @Query((returns) => [Transaction], { nullable: true })
+  @Query((returns) => Transaction, { nullable: true })
   async transaction(
     @Args('id', { type: () => Int }) id: number,
   ): Promise<PrismaTransaction> {

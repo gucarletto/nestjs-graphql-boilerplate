@@ -23,7 +23,7 @@ export class UsersResolver {
     return this.usersService.user({ id: id });
   }
 
-  @Query((returns) => User, { nullable: true })
+  @Query((returns) => [User], { nullable: true })
   async users(): Promise<PrismaUser[]> {
     return this.usersService.users({});
   }
