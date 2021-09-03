@@ -13,22 +13,28 @@ import {
   Transaction as PrismaTransaction,
   User as PrismaUser,
 } from '@prisma/client';
+import { User } from 'src/models/user';
 
 @Resolver(Transaction)
-export class UsersResolver {
+export class TransactionsResolver {
   constructor(
     private readonly usersService: UserService,
     private readonly transactionsService: TransactionService,
   ) {}
 
-  @Query((returns) => Transaction, { nullable: true })
+  @Query((returns) => [Transaction], { nullable: true })
   async transaction(
     @Args('id', { type: () => Int }) id: number,
   ): Promise<PrismaTransaction> {
     return this.transactionsService.transaction({ id: id });
   }
 
-  @ResolveField()
+  @Query((returns) => [Transaction], { nullable: true })
+  async transactions(): Promise<PrismaTransaction[]> {
+    return this.transactionsService.transactions({});
+  }
+
+  @ResolveField((returns) => [User])
   async user(@Parent() transaction: PrismaTransaction): Promise<PrismaUser> {
     const { userId } = transaction;
     return this.usersService.user({

@@ -2,6 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Transaction {
+  id: Int!
+  value: Float!
+  user: User
+}
+
+type User {
+  id: Int!
+  email: String!
+  name: String
+  transactions: [Transaction!]
+}
+
 type Query {
   getHello: String!
+  user(id: Int!): User
+  users: User
+  transaction(id: Int!): [Transaction!]
+  transactions: [Transaction!]
 }

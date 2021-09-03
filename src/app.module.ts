@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import { AppController } from './app.controller';
+import { UsersResolver } from './resolvers/users.resolver';
+import { TransactionsResolver } from './resolvers/transactions.resolver';
+import { UserService } from './services/user.service';
+import { TransactionService } from './services/transactions.service';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma.service';
 
@@ -11,7 +14,13 @@ import { PrismaService } from './prisma.service';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
   ],
-  controllers: [AppController],
-  providers: [PrismaService, AppService],
+  providers: [
+    PrismaService,
+    AppService,
+    UsersResolver,
+    TransactionsResolver,
+    UserService,
+    TransactionService,
+  ],
 })
 export class AppModule {}

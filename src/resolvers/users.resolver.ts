@@ -23,6 +23,11 @@ export class UsersResolver {
     return this.usersService.user({ id: id });
   }
 
+  @Query((returns) => User, { nullable: true })
+  async users(): Promise<PrismaUser[]> {
+    return this.usersService.users({});
+  }
+
   @ResolveField()
   async transactions(@Parent() user: User): Promise<Transaction[]> {
     const { id } = user;
